@@ -1,0 +1,88 @@
+# Sources of inspiration:
+# http://scipy.github.io/old-wiki/pages/Cookbook/Matplotlib/LaTeX_Examples
+# http://matplotlib.org/users/style_sheets.html#style-sheets
+# http://nipunbatra.github.io/2014/08/latexify/
+# http://bkanuka.com/articles/native-latex-plots/
+# https://www.bastibl.net/publication-quality-plots/
+
+# This style sheet is based on the Seaborn styles, so load Seaborn first to
+# be sure to get the same result. For the thesis we'll use:
+# - `sns.set(context='paper', style='darkgrid')` for slab_plot
+#
+# The sheet was tested with darkgrid/notebook as well, which gives slightly
+# larger padding between tick labels and axis and also larger points.
+#
+# Alternatively, one can do without Seaborn by using mpl.style.use or .context
+# functions with the Matplotlib clones of the Seaborn styles, like so:
+# ['seaborn-paper', 'seaborn-dark', 'seaborn-deep', './thesis.mplstyle']
+# for slab_plots and
+# ['seaborn-paper', 'seaborn-white', 'seaborn-deep', './thesis.mplstyle']
+# for line_plots.
+# However, this omits setting patch.facecolor! To fix that, also load the
+# fix_seaborn-deep.mplstyle sheet, or wait for my issue to be fixed
+# (https://github.com/matplotlib/matplotlib/issues/6307).
+# When necessary, the deep colors are the following:
+# ['4C72B0', '55A868', 'C44E52', '8172B2', 'CCB974', '64B5CD']
+
+
+
+### FIGURE SIZE
+# Found by putting \the\textwidth in the tex file, which is replaced by the
+# textwidth number in pt in the compiled pdf. Then run in Python:
+# textwidth_pt = 369.88583
+# inches_per_pt = 1.0/72.27
+# textwidth_in = 369.88583 * inches_per_pt
+# Use the golden ratio to define the default height based on the width:
+# golden_ratio = (np.sqrt(5.0)-1.0)/2.0
+# height_in = golden_ratio * textwidth_in
+
+figure.figsize : 5.118110280891103, 3.1631661117609733
+
+
+### FONT
+# From https://www.bastibl.net/publication-quality-plots/
+text.usetex: True
+font.family: serif
+font.serif: computer modern roman
+
+
+### FONT SIZES
+font.size: 10.95
+axes.labelsize: 10.95  # default for everything, also colorbar
+xtick.labelsize: 10.95
+ytick.labelsize: 10.95
+legend.fontsize: 10.95
+
+
+### PGF STUFF
+pgf.texsystem: pdflatex
+pgf.preamble: \usepackage[utf8x]{inputenc}, \usepackage[T1]{fontenc}
+              
+
+### IMAGES
+image.interpolation: nearest
+# Dit zorgt ervoor dat een grid gewoon geplot wordt zoals je het verwacht
+# ((0,0) komt links onderin):
+image.origin: lower
+# Betere default colormap
+# (https://github.com/matplotlib/matplotlib/issues/875)
+image.cmap: hot
+
+
+### AXES
+# Following http://www.randalolson.com/2014/06/28/how-to-make-beautiful-data-visualizations-in-python-with-matplotlib/
+# we remove the all axes spines by default. This is necessary to also remove
+# them from colorbars. They can be manually reactivated for regular plots.
+axes.spines.bottom: False
+axes.spines.left: False
+axes.spines.right: False
+axes.spines.top: False
+# there always seems to be a remaining edge; make it transparent:
+# axes.edgecolor: none
+# WARNING: DON'T TURN THE EDGES OFF HERE, use edges_off.mplstyle.
+
+# In some cases (e.g. spine_and_indiv_objects.py) we still want axes borders.
+# Then we need the line width set a bit smaller, like we do in
+# line_plot.mplstyle.
+axes.linewidth: 0.87
+
